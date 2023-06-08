@@ -30,6 +30,10 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @OneToOne(mappedBy = "user")
+    @PrimaryKeyJoinColumn
+    private Balance balance;
+
     @OneToMany(
             fetch = FetchType.EAGER,
             mappedBy = "user"
