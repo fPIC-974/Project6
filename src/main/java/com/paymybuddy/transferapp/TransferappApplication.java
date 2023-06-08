@@ -1,7 +1,11 @@
 package com.paymybuddy.transferapp;
 
+import com.paymybuddy.transferapp.model.Account;
 import com.paymybuddy.transferapp.model.User;
 import com.paymybuddy.transferapp.repository.UserRepository;
+import com.paymybuddy.transferapp.service.AccountService;
+import com.paymybuddy.transferapp.service.IAccountService;
+import com.paymybuddy.transferapp.service.IUserService;
 import com.paymybuddy.transferapp.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,11 +21,10 @@ public class TransferappApplication {
     }
 
     @Bean
-    CommandLineRunner commandLineRunner(UserService userService) {
+    CommandLineRunner commandLineRunner(IUserService userService, IAccountService accountService) {
         return args -> {
             System.out.println(userService.getUsers());
-            userService.deleteUser(1);
-            System.out.println(userService.getUsers());
+            System.out.println(userService.getUserById(3));
         };
     }
 }
