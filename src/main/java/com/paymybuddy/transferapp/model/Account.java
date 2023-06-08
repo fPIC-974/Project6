@@ -9,7 +9,7 @@ import lombok.Data;
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
 
     private String name;
 
