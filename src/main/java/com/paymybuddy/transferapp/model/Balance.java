@@ -31,6 +31,12 @@ public class Balance {
     )
     List<Transfer> transfers = new ArrayList<>();
 
+    @OneToMany(
+            fetch = FetchType.EAGER,
+            mappedBy = "balance"
+    )
+    List<Payment> payments = new ArrayList<>();
+
     public Balance() {
 
     }

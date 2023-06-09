@@ -1,9 +1,6 @@
 package com.paymybuddy.transferapp;
 
-import com.paymybuddy.transferapp.model.Account;
-import com.paymybuddy.transferapp.model.Balance;
-import com.paymybuddy.transferapp.model.Transfer;
-import com.paymybuddy.transferapp.model.User;
+import com.paymybuddy.transferapp.model.*;
 import com.paymybuddy.transferapp.repository.UserRepository;
 import com.paymybuddy.transferapp.service.*;
 import org.springframework.boot.CommandLineRunner;
@@ -24,7 +21,8 @@ public class TransferappApplication {
                                         IAccountService accountService,
                                         IBalanceService balanceService,
                                         ITransferService transferService,
-                                        IConnectionService connectionService) {
+                                        IConnectionService connectionService,
+                                        IPaymentService paymentService) {
         return args -> {
             //System.out.println(userService.getUsers());
             /*System.out.println(userService.getUserById(2));
@@ -44,7 +42,7 @@ public class TransferappApplication {
 
             //User user = userService.getUserById(1);
 
-            //transferService.saveTransfer(new Transfer(50.00, accountService.getAccount(3), balanceService.getBalance(user.getId())));
+            //transferService.saveTransfer(new Transfer(50.00, accountService.getAccount(1), balanceService.getBalance(user.getId())));
 
             //System.out.println(userService.getUserById(user.getId()));
 
@@ -54,6 +52,9 @@ public class TransferappApplication {
             //connectionService.saveConnection(userService.getUserById(1), userService.getUserById(3));
 
 //            System.out.println(userService.getUsers());
+            Payment payment = new Payment(30.00, "Deuxième paiement",
+                    balanceService.getBalance(1), userService.getUserById(2));
+            paymentService.savePayment(payment);
             System.out.println(userService.getUserById(1));
         };
     }

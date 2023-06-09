@@ -42,6 +42,12 @@ public class User {
     )
     private List<Account> accounts = new ArrayList<>();
 
+    @OneToMany(
+            fetch = FetchType.EAGER,
+            mappedBy = "user"
+    )
+    List<Payment> payments = new ArrayList<>();
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "connection",
@@ -49,14 +55,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "connection_id")
     )
     private List<User> connections = new ArrayList<>();
-
-    /*@ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "connection",
-            joinColumns = @JoinColumn(name = "connection_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<User> connectionOf = new ArrayList<>();*/
 
     public User() {}
 
