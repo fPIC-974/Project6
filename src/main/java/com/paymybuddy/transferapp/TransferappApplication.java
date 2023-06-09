@@ -23,7 +23,8 @@ public class TransferappApplication {
     CommandLineRunner commandLineRunner(IUserService userService,
                                         IAccountService accountService,
                                         IBalanceService balanceService,
-                                        ITransferService transferService) {
+                                        ITransferService transferService,
+                                        IConnectionService connectionService) {
         return args -> {
             //System.out.println(userService.getUsers());
             /*System.out.println(userService.getUserById(2));
@@ -41,12 +42,19 @@ public class TransferappApplication {
             accountService.saveAccount(new Account("Account1", 111111, user));
             accountService.saveAccount(new Account("Account2", 222222, user));*/
 
-            User user = userService.getUserById(46);
+            //User user = userService.getUserById(1);
 
             //transferService.saveTransfer(new Transfer(50.00, accountService.getAccount(3), balanceService.getBalance(user.getId())));
 
-            System.out.println(userService.getUserById(user.getId()));
+            //System.out.println(userService.getUserById(user.getId()));
 
+            /*userService.saveUser(new User("titi", "TITI", "titi@mail.net", "pass"));
+            userService.saveUser(new User("tata", "TATA", "tata@mail.net", "pass"));*/
+
+            //connectionService.saveConnection(userService.getUserById(1), userService.getUserById(3));
+
+//            System.out.println(userService.getUsers());
+            System.out.println(userService.getUserById(1));
         };
     }
 }

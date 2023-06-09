@@ -42,6 +42,22 @@ public class User {
     )
     private List<Account> accounts = new ArrayList<>();
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "connection",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "connection_id")
+    )
+    private List<User> connections = new ArrayList<>();
+
+    /*@ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "connection",
+            joinColumns = @JoinColumn(name = "connection_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> connectionOf = new ArrayList<>();*/
+
     public User() {}
 
     public User(String firstName, String lastName, String email, String password) {
