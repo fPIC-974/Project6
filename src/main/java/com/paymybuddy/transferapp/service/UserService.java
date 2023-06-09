@@ -1,6 +1,8 @@
 package com.paymybuddy.transferapp.service;
 
+import com.paymybuddy.transferapp.model.Balance;
 import com.paymybuddy.transferapp.model.User;
+import com.paymybuddy.transferapp.repository.BalanceRepository;
 import com.paymybuddy.transferapp.repository.UserRepository;
 import lombok.Data;
 
@@ -13,13 +15,17 @@ import java.util.List;
 public class UserService implements IUserService {
 
     private final UserRepository userRepository;
+    private final BalanceRepository balanceRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository,
+                       BalanceRepository balanceRepository) {
         this.userRepository = userRepository;
+        this.balanceRepository = balanceRepository;
     }
 
     /**
      * Get a list of users
+     *
      * @return the list of User objects
      */
     @Override
@@ -34,7 +40,12 @@ public class UserService implements IUserService {
 
     @Override
     public User saveUser(User user) {
-        return userRepository.save(user);
+        User toAdd = userRepository.save(user);
+        Balance balance = new Balance(toAdd);
+        toAdd.setBalance(balance);
+        balanceRepository.save(balance);
+
+        return toAdd;
     }
 
     @Override
@@ -55,6 +66,8 @@ public class UserService implements IUserService {
 
     @Override
     public void deleteUser(int id) {
-        userRepository.deleteById(id);
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+        }
     }
 }

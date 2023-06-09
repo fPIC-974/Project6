@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "account")
 @Data
@@ -20,6 +23,12 @@ public class Account {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    @OneToMany(
+            fetch = FetchType.EAGER,
+            mappedBy = "account"
+    )
+    List<Transfer> transfers = new ArrayList<>();
 
     public Account() {
 

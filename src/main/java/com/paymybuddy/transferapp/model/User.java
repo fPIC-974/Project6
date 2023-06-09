@@ -30,8 +30,10 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @OneToOne(mappedBy = "user")
-    @PrimaryKeyJoinColumn
+    /*@OneToOne(mappedBy = "user")
+    @PrimaryKeyJoinColumn*/
+    @OneToOne
+    @JoinColumn(name = "id", referencedColumnName = "id")
     private Balance balance;
 
     @OneToMany(
@@ -47,7 +49,6 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.accounts = null;
     }
 }
 
