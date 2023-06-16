@@ -33,19 +33,34 @@ public class UserService implements IUserService {
         return userRepository.findAll();
     }
 
+    /**
+     * Get a User identified by its id field in database
+     * @param id the id of the requested user
+     * @return the requested User object
+     */
     @Override
     public User getUserById(int id) {
         return userRepository.findById(id).orElse(null);
     }
 
+    /**
+     * Save a User in the database
+     * A Balance is also created in database for this User
+     * @param user the user to be saved
+     * @return the User saved in database
+     */
     @Override
     public User saveUser(User user) {
-        User toAdd = userRepository.save(user);
-        Balance balance = new Balance(toAdd);
-        toAdd.setBalance(balance);
-        balanceRepository.save(balance);
+        if (!userRepository.existsByEmail(user.getEmail())) {
+            User toAdd = userRepository.save(user);
+            Balance balance = new Balance(toAdd);
+            toAdd.setBalance(balance);
+            balanceRepository.save(balance);
 
-        return toAdd;
+            return toAdd;
+        }
+
+        return null;
     }
 
     @Override
