@@ -9,6 +9,8 @@ public interface IUserService {
 
     User getUserById(int id);
 
+    User getUserByEmail(String email);
+
     User saveUser(User user);
 
     User updateUser(int id, User user);

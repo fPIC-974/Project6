@@ -2,11 +2,14 @@ package com.paymybuddy.transferapp.service;
 
 import com.paymybuddy.transferapp.model.Balance;
 import com.paymybuddy.transferapp.model.Payment;
+import com.paymybuddy.transferapp.model.User;
 import com.paymybuddy.transferapp.repository.BalanceRepository;
 import com.paymybuddy.transferapp.repository.PaymentRepository;
+import com.paymybuddy.transferapp.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PaymentService implements IPaymentService {
@@ -14,10 +17,14 @@ public class PaymentService implements IPaymentService {
     private PaymentRepository paymentRepository;
     private BalanceRepository balanceRepository;
 
+    private UserRepository userRepository;
+
     public PaymentService(PaymentRepository paymentRepository,
-                          BalanceRepository balanceRepository) {
+                          BalanceRepository balanceRepository,
+                          UserRepository userRepository) {
         this.paymentRepository = paymentRepository;
         this.balanceRepository = balanceRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -28,6 +35,11 @@ public class PaymentService implements IPaymentService {
     @Override
     public Payment getPayment(int id) {
         return paymentRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Payment> getPaymentsByBalanceId(int id) {
+        return paymentRepository.getPaymentsByBalance(balanceRepository.findById(id).orElse(null));
     }
 
     @Override

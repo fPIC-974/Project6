@@ -8,5 +8,8 @@ import java.util.List;
 public interface IConnectionService {
     List<Connection> getConnections();
     Connection getConnectionsById(int id);
+
+    List<User> getConnectionsByUserId(int id);
+
     Connection saveConnection(User owner, User related);
 }

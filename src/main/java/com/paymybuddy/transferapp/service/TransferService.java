@@ -36,9 +36,9 @@ public class TransferService implements ITransferService {
 
     @Override
     public Transfer saveTransfer(Transfer transfer) {
-        Balance balance = balanceRepository.findById(transfer.getBalance().getId()).orElse(null);
-        balance.setAmount(balance.getAmount() + transfer.getAmount());
-        balanceRepository.save(balance);
+//        Balance balance = balanceRepository.findById(transfer.getBalance().getId()).orElse(null);
+//        balance.setAmount(balance.getAmount() + transfer.getAmount());
+//        balanceRepository.save(balance);
         return transferRepository.save(transfer);
     }
 

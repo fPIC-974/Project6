@@ -25,7 +25,7 @@ public class Account {
     private User user;
 
     @OneToMany(
-            fetch = FetchType.EAGER,
+            fetch = FetchType.LAZY,
             mappedBy = "account"
     )
     List<Transfer> transfers = new ArrayList<>();

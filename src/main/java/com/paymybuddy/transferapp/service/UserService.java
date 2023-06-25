@@ -43,6 +43,11 @@ public class UserService implements IUserService {
         return userRepository.findById(id).orElse(null);
     }
 
+    @Override
+    public User getUserByEmail(String email) {
+        return userRepository.getUserByEmail(email);
+    }
+
     /**
      * Save a User in the database
      * A Balance is also created in database for this User

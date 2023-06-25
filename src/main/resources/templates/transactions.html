@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script   src="https://code.jquery.com/jquery-3.6.4.min.js"   integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="   crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+<body>
+<div style="width: 75%; margin-left: auto; margin-right: auto">
+    <div style="display: flex; justify-content: space-between; align-items: baseline; flex-basis: 100%">
+        <span>Send money</span>
+        <span><button href="#" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal" data-bs-whatever="@getbootstrap">Add Connection</button></span>
+    </div>
+    <form th:action="@{/payment/addNew}" method="post">
+    <div style="display: flex; justify-content: space-between; align-items: baseline; flex-basis: 100%; background-color: lightgray; padding-top: 50px; padding-bottom: 50px; padding-left: 200px; padding-right: 200px">
+        <span>
+                    <div class="form-group">
+                        <input type="hidden" class="form-control" id="recipient-name" name="user" th:value="${user}">
+                    </div>
+            <select class="form-control" id="dropDownList" name="id">
+                <option value="0">Select a connection</option>
+                <option th:each="connection: ${connections}" th:value="${connection.getId()}" th:text="${connection.getEmail()}"></option>
+            </select>
+        </span>
+        <span size=>
+            <input class="form-control" type="number" id="amount" name="amount" value="0">
+        </span>
+        <span>
+            <input class="form-control" type="text" id="description" name="description" value="Description ...">
+        </span>
+        <span>
+                <button type="submit" class="btn btn-primary">Pay</button>
+        </span>
+    </div>
+    </form>
+
+    My transactions
+    <table class="table table-bordered table-striped" id="transactionsTable">
+        <thead>
+        <tr>
+            <th>Connections</th>
+            <th>Description</th>
+            <th>Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="payment: ${payments}">
+            <td th:text="${payment.getUser().getEmail()}"/>
+            <td th:text="${payment.getDescription()}"/>
+            <td th:text="${payment.getAmount()}"/>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form th:action="@{/connection/addNew}" method="post">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New Connection</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+<!--                        <label for="recipient-name" class="col-form-label">Id:</label>-->
+                        <input type="hidden" class="form-control" id="recipient-name" name="id" th:value="${user}">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Email:</label>
+                        <input type="text" class="form-control" id="recipient-name" name="email">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Add Connection</button>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+</body>
+</html>

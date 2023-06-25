@@ -25,14 +25,16 @@ public class Balance {
     @OneToOne(mappedBy = "balance")
     private User user;
 
+    @ToString.Exclude
     @OneToMany(
-            fetch = FetchType.EAGER,
+            fetch = FetchType.LAZY,
             mappedBy = "balance"
     )
     List<Transfer> transfers = new ArrayList<>();
 
+    @ToString.Exclude
     @OneToMany(
-            fetch = FetchType.EAGER,
+            fetch = FetchType.LAZY,
             mappedBy = "balance"
     )
     List<Payment> payments = new ArrayList<>();
@@ -43,7 +45,7 @@ public class Balance {
 
     public Balance(User user) {
         this.amount = 0.00;
-        this.user = user;
+//        this.user = user;
         this.setId(user.getId());
     }
 }

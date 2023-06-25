@@ -11,4 +11,6 @@ public interface IPaymentService {
     Payment savePayment(Payment payment);
     Payment updatePayment(int id, Payment payment);
     void deletePayment(int id);
+
+    List<Payment> getPaymentsByBalanceId(int id);
 }

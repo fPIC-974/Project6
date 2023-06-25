@@ -36,7 +36,7 @@ public class BalanceService implements IBalanceService {
 
         if (toUpdate != null && balance != null) {
             toUpdate.setAmount(balance.getAmount());
-            toUpdate.setUser(balance.getUser());
+//            toUpdate.setUser(balance.getUser());
 
             return balanceRepository.save(toUpdate);
         }

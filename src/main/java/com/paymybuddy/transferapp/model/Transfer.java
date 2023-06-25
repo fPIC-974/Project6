@@ -39,8 +39,8 @@ public class Transfer {
 
     public Transfer(double amount, Account account, Balance balance) {
         this.amount = amount;
-        this.account = account;
-        this.balance = balance;
+//        this.account = account;
+//        this.balance = balance;
     }
 }
 
