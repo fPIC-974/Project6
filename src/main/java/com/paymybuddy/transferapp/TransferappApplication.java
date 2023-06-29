@@ -6,6 +6,8 @@ import com.paymybuddy.transferapp.model.Transfer;
 import com.paymybuddy.transferapp.model.User;
 import com.paymybuddy.transferapp.service.*;
 import jakarta.transaction.Transactional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,6 +22,8 @@ import java.util.stream.Collectors;
 //@SpringBootApplication ( exclude = {SecurityAutoConfiguration.class} )
 @SpringBootApplication
 public class TransferappApplication implements CommandLineRunner {
+
+    private static final Logger logger = LogManager.getLogger(TransferappApplication.class);
 
     private final UserService userService;
     private final AccountService accountService;
@@ -50,6 +54,7 @@ public class TransferappApplication implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
+        logger.warn("Starting application ...");
         //System.out.println(userService.getUsers());
         User user = userService.getUserById(1);
         Balance balance = balanceService.getBalance(user.getId());

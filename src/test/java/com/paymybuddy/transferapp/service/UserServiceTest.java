@@ -1,5 +1,7 @@
 package com.paymybuddy.transferapp.service;
 
+import com.paymybuddy.transferapp.exceptions.AlreadyExistsException;
+import com.paymybuddy.transferapp.exceptions.NotFoundException;
 import com.paymybuddy.transferapp.model.Balance;
 import com.paymybuddy.transferapp.model.User;
 import com.paymybuddy.transferapp.repository.BalanceRepository;
@@ -42,17 +44,20 @@ class UserServiceTest {
 
     @Test
     public void saveExistingUser() {
-        reset(balanceRepository);
-        reset(userRepository);
+
 
         User toSave = new User("John", "Doe", "jdoe@mail.net", "pass");
 
-        when(userRepository.existsByEmail(anyString())).thenReturn(true);
+        when(userRepository.existsByEmail("jdoe@mail.net")).thenReturn(true);
 
-        User toCheck = userService.saveUser(toSave);
 
-        assertNull(toCheck);
-        verify(userRepository, times(0)).save(any(User.class));
+        AlreadyExistsException aee = assertThrows(AlreadyExistsException.class,
+                () -> userService.saveUser(toSave));
+
+        assertEquals("User already exists", aee.getMessage());
+
+        reset(balanceRepository);
+        reset(userRepository);
     }
 
     @Test
@@ -98,9 +103,9 @@ class UserServiceTest {
 
         when(userRepository.findById(anyInt())).thenReturn(Optional.empty());
 
-        User toCheck = userService.updateUser(1, toSave);
+        NotFoundException nfe = assertThrows(NotFoundException.class,
+                () -> userService.updateUser(1, toSave));
 
-        assertNull(toCheck);
-        verify(userRepository, times(0)).save(any(User.class));
+        assertEquals("User not found", nfe.getMessage());
     }
 }

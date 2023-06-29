@@ -15,7 +15,7 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="com.safetynet.alerts" level="debug" additivity="false">
+        <Logger name="com.paymybuddy.transferapp" level="debug" additivity="false">
             <AppenderRef ref="ConsoleAppender" />
         </Logger>
 
