@@ -43,9 +43,14 @@ public class SecurityConfig {
                 .formLogin()
                 .defaultSuccessUrl("/transactions", true)
                 .and()
-                .rememberMe();
+                .logout()
+                .deleteCookies("JSESSIONID")
+                .and()
+                .rememberMe()
+                .key("uniqueAndSecret");
         return httpSecurity.build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

@@ -8,6 +8,8 @@ import com.paymybuddy.transferapp.service.IConnectionService;
 import com.paymybuddy.transferapp.service.IPaymentService;
 import com.paymybuddy.transferapp.service.IUserService;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,7 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.IntStream;
 
 @RestController
 public class PaymentController {
@@ -40,10 +45,15 @@ public class PaymentController {
 
     @PostMapping("payment/addNew")
     public ModelAndView savePaymentForUser(@RequestParam Integer user,
-                                   @RequestParam Integer id,
-                                   @RequestParam Integer amount,
-                                   @RequestParam String description,
-                                   HttpServletResponse response) throws IOException {
+                                           @RequestParam Integer id,
+                                           @RequestParam Integer amount,
+                                           @RequestParam String description,
+                                           Principal principal,
+                                           @RequestParam("page") Optional<Integer> page,
+                                           @RequestParam("size") Optional<Integer> size) {
+
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(3);
 
         Balance balance = balanceService.getBalance(user);
 
@@ -51,14 +61,32 @@ public class PaymentController {
 
         ModelAndView modelAndView = new ModelAndView("transactions");
 
-        try {
-            paymentService.savePayment(new Payment(amount, description, balance, recipient));
-        } catch (RuntimeException runtimeException) {
-            modelAndView.addObject("errorMessage", "Insufficient Funds");
-            response.addHeader("errorMessage", "Insufficient funds");
+        List<Payment> payments = paymentService.getPaymentsByBalanceId(user);
+
+        Page<Payment> paymentPage = paymentService.getPaymentsPaginated(PageRequest.of(currentPage - 1, pageSize), user);
+
+        modelAndView.addObject("paymentPage", paymentPage);
+        modelAndView.addObject("currentPage", currentPage);
+
+        int totalPages = paymentPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .toList();
+            modelAndView.addObject("pageNumbers", pageNumbers);
         }
 
-        List<Payment> payments = paymentService.getPaymentsByBalanceId(user);
+        modelAndView.addObject("connections", connectionService.getConnectionsByUserId(user));
+        modelAndView.addObject("user", user);
+        modelAndView.addObject("payments", payments);
+
+        try {
+            paymentService.savePayment(new Payment(amount, description, balance, recipient));
+            modelAndView.addObject("statusMessage", "Payment done");
+        } catch (RuntimeException runtimeException) {
+            modelAndView.addObject("errorMessage", "Insufficient Funds");
+//            response.addHeader("errorMessage", "Insufficient funds");
+        }
 
         modelAndView.addObject("connections", connectionService.getConnectionsByUserId(user));
         modelAndView.addObject("user", user);

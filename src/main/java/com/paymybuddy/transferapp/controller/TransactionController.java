@@ -4,6 +4,7 @@ import com.paymybuddy.transferapp.model.Payment;
 import com.paymybuddy.transferapp.model.User;
 import com.paymybuddy.transferapp.service.*;
 import org.dom4j.rule.Mode;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.ui.Model;
@@ -41,7 +42,6 @@ public class TransactionController {
     }
 
     @GetMapping("/transactions")
-//    public ModelAndView getTransactionsByUserId(@RequestParam Integer id, Principal principal) {
     public ModelAndView getTransactionsByUserId(Principal principal,
                                                 @RequestParam("page") Optional<Integer> page,
                                                 @RequestParam("size") Optional<Integer> size) {
@@ -53,8 +53,43 @@ public class TransactionController {
 
         ModelAndView modelAndView = new ModelAndView("transactions");
 
-        /*User user = userService.getUserById(id);
-        List<User> connections = user.getConnections();*/
+        List<Payment> payments = paymentService.getPaymentsByBalanceId(id);
+
+        Page<Payment> paymentPage = paymentService.getPaymentsPaginated(PageRequest.of(currentPage - 1, pageSize), id);
+
+        modelAndView.addObject("paymentPage", paymentPage);
+        modelAndView.addObject("currentPage", currentPage);
+
+        int totalPages = paymentPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .toList();
+            modelAndView.addObject("pageNumbers", pageNumbers);
+        }
+
+
+
+        modelAndView.addObject("connections", connectionService.getConnectionsByUserId(id));
+        modelAndView.addObject("user", id);
+        modelAndView.addObject("payments", payments);
+
+        return modelAndView;
+    }
+
+    /*public ModelAndView defaultView(
+            Principal principal,
+            @RequestParam("page") Optional<Integer> page,
+            @RequestParam("size") Optional<Integer> size) {
+
+        // Get current user id
+        Integer id = userService.getUserByEmail(principal.getName()).getId();
+
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(3);
+
+        ModelAndView modelAndView = new ModelAndView("transactions");
+
         List<Payment> payments = paymentService.getPaymentsByBalanceId(id);
 
         Page<Payment> paymentPage = paymentService.getPaymentsPaginated(PageRequest.of(currentPage - 1, pageSize), id);
@@ -75,5 +110,5 @@ public class TransactionController {
         modelAndView.addObject("payments", payments);
 
         return modelAndView;
-    }
+    }*/
 }

@@ -56,7 +56,7 @@ public class TransferappApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         logger.warn("Starting application ...");
         //System.out.println(userService.getUsers());
-        User user = userService.getUserById(1);
+        /*User user = userService.getUserById(1);
         Balance balance = balanceService.getBalance(user.getId());
         balance.getTransfers().forEach(transfer -> {
             System.out.println("From Account : " + transfer.getAccount().getName()
@@ -68,6 +68,11 @@ public class TransferappApplication implements CommandLineRunner {
             System.out.println("From " + payment.getUser()
                     + " Amount : " + payment.getAmount()
                     + " Date : " + payment.getDate());
-        });
+        });*/
+
+        /*User userById4 = userService.getUserById(4);
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        userById4.setPassword(passwordEncoder.encode("password"));
+        userService.updateUser(4, userById4);*/
     }
 }
