@@ -6,6 +6,7 @@ import lombok.Data;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Data
@@ -34,6 +35,15 @@ public class AccountService implements IAccountService {
 
     @Override
     public Account saveAccount(Account account) {
+        List<Account> accountList = accountRepository.findAccountsByUser(account.getUser());
+
+        for (Account acc: accountList) {
+            if (Objects.equals(acc.getName(), account.getName())
+                    || Objects.equals(acc.getNumber(), account.getNumber())) {
+                throw new RuntimeException("Already exists");
+            }
+        }
+
         return accountRepository.save(account);
     }
 

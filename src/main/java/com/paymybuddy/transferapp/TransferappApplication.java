@@ -12,11 +12,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.access.method.P;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@SpringBootApplication ( exclude = {SecurityAutoConfiguration.class} )
+//@SpringBootApplication ( exclude = {SecurityAutoConfiguration.class} )
+@SpringBootApplication
 public class TransferappApplication implements CommandLineRunner {
 
     private final UserService userService;

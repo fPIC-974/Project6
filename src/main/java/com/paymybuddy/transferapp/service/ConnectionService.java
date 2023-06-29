@@ -46,6 +46,10 @@ public class ConnectionService implements IConnectionService {
 
     @Override
     public Connection saveConnection(User owner, User related) {
+        if (related == null || userRepository.findById(related.getId()).isEmpty()) {
+            throw new RuntimeException("Connection not found");
+        }
+
         return connectionRepository.save(new Connection(owner.getId(), related.getId()));
     }
 }

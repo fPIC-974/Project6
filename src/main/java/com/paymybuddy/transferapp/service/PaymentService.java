@@ -6,8 +6,13 @@ import com.paymybuddy.transferapp.model.User;
 import com.paymybuddy.transferapp.repository.BalanceRepository;
 import com.paymybuddy.transferapp.repository.PaymentRepository;
 import com.paymybuddy.transferapp.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +47,27 @@ public class PaymentService implements IPaymentService {
         return paymentRepository.getPaymentsByBalance(balanceRepository.findById(id).orElse(null));
     }
 
+    public Page<Payment> getPaymentsPaginated(Pageable pageable, int id) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+
+        List<Payment> payments = getPaymentsByBalanceId(id);
+        List<Payment> paymentList;
+
+        if (payments.size() < startItem) {
+            paymentList = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, payments.size());
+            paymentList = payments.subList(startItem, toIndex);
+        }
+
+        Page<Payment> paymentPage
+                = new PageImpl<Payment>(paymentList, PageRequest.of(currentPage, pageSize), payments.size());
+
+        return paymentPage;
+    }
+
     @Override
     public Payment savePayment(Payment payment) {
         // Get the balance from origin user
@@ -50,15 +76,15 @@ public class PaymentService implements IPaymentService {
         // Get the balance from destination user
         Balance destinationBalance = balanceRepository.findById(payment.getUser().getId()).orElse(null);
 
-        if ((sourceBalance.getAmount() - payment.getAmount()) >= 0) {
-            sourceBalance.setAmount(sourceBalance.getAmount() - payment.getAmount());
-            destinationBalance.setAmount(destinationBalance.getAmount() + payment.getAmount());
-            balanceRepository.save(sourceBalance);
-            balanceRepository.save(destinationBalance);
-            return paymentRepository.save(payment);
+        if ((sourceBalance.getAmount() - payment.getAmount()) < 0) {
+            throw new RuntimeException("Insufficient funds");
         }
 
-        return null;
+        sourceBalance.setAmount(sourceBalance.getAmount() - payment.getAmount());
+        destinationBalance.setAmount(destinationBalance.getAmount() + payment.getAmount());
+        balanceRepository.save(sourceBalance);
+        balanceRepository.save(destinationBalance);
+        return paymentRepository.save(payment);
     }
 
     @Override
