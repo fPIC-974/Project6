@@ -43,7 +43,7 @@ public class PaymentController {
         this.connectionService = connectionService;
     }
 
-    @PostMapping("payment/addNew")
+    @PostMapping("payments/addNew")
     public ModelAndView savePaymentForUser(@RequestParam Integer user,
                                            @RequestParam Integer id,
                                            @RequestParam Integer amount,
@@ -84,7 +84,7 @@ public class PaymentController {
             paymentService.savePayment(new Payment(amount, description, balance, recipient));
             modelAndView.addObject("statusMessage", "Payment done");
         } catch (RuntimeException runtimeException) {
-            modelAndView.addObject("errorMessage", "Insufficient Funds");
+            modelAndView.addObject("errorMessage", runtimeException.getMessage());
 //            response.addHeader("errorMessage", "Insufficient funds");
         }
 
