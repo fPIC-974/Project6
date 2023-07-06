@@ -37,7 +37,7 @@ public class ConnectionController {
         this.paymentService = paymentService;
     }
 
-    @PostMapping("connection/addNew")
+    @PostMapping("connections/addNew")
     public ModelAndView saveConnectionForUser(@RequestParam Integer id,
                                               @RequestParam String email,
                                               Principal principal,

@@ -11,8 +11,10 @@
 <body>
 <div style="width: 100%; margin-left: auto; margin-right: auto">
     <nav class="navbar navbar-expand-lg navbar-light" style="background-color: white">
-        <a class="navbar-brand bg-success text-white rounded navbar-expand-lg" style="background-image: linear-gradient(15deg, #73B666 0%, #97C15E 100%)" href="#"><span class="mx-2">Pay My Buddy<span</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand bg-success text-white rounded navbar-expand-lg"
+           style="background-image: linear-gradient(15deg, #73B666 0%, #97C15E 100%)" href="#"><span class="mx-2">Pay My Buddy<span</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
@@ -40,13 +42,15 @@
 
     <span><p></p></span>
 
-    <div style="width: 50%; margin: auto; padding: 10px; alignment: center" th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show position-fixed text-center" role="alert">
+    <div style="width: 50%; margin: auto; padding: 10px; alignment: center" th:if="${errorMessage}"
+         class="alert alert-danger alert-dismissible fade show position-fixed text-center" role="alert">
         <span th:text="${errorMessage}">Error</span>
         <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div style="width: 50%; margin: auto; padding: 10px; alignment: center" th:if="${statusMessage}" class="alert alert-success alert-dismissible fade show position-fixed" role="alert">
+    <div style="width: 50%; margin: auto; padding: 10px; alignment: center" th:if="${statusMessage}"
+         class="alert alert-success alert-dismissible fade show position-fixed" role="alert">
         <span th:text="${statusMessage}">Error</span>
         <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -54,13 +58,15 @@
     </div>
 
     <div style="width: 75%; margin-left: auto; margin-right: auto">
-    <div style="display: flex; justify-content: space-between; align-items: baseline; flex-basis: 100%">
-        <span>Send money</span>
-        <span><button href="#" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"
-                      data-bs-whatever="@getbootstrap">Add Connection</button></span>
-    </div>
-    <form th:action="@{/payment/addNew}" method="post">
-        <div class="bg-light-subtle" style="display: flex; justify-content: space-between; align-items: baseline; flex-basis: 100%; padding-top: 50px; padding-bottom: 50px; padding-left: 50px; padding-right: 50px">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; flex-basis: 100%">
+            <span>Send money</span>
+            <span><button href="#" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                          data-bs-target="#addModal"
+                          data-bs-whatever="@getbootstrap" style="width: 200px">Add Connection</button></span>
+        </div>
+        <form th:action="@{/payment/addNew}" method="post">
+            <div class="bg-light-subtle"
+                 style="display: flex; justify-content: space-between; align-items: baseline; flex-basis: 100%; padding-top: 50px; padding-bottom: 50px; padding-left: 50px; padding-right: 50px">
             <span>
                 <div class="form-group">
                     <input type="hidden" class="form-control" id="recipient-name" name="user" th:value="${user}">
@@ -71,67 +77,76 @@
                             th:text="${connection.getEmail()}"></option>
                 </select>
             </span>
-            <span>
-                <input class="form-control " type="number" id="amount" name="amount" value="0">
-            </span>
-            <span>
+                <div class="input-group mb-3" style="width: 15%">
+                    <span class="input-group-text">€</span>
+                    <input class="form-control" type="number" id="amount" name="amount" value="0" min="0">
+                </div>
+                <span>
                 <input class="form-control" type="text" id="description" name="description" value="Description ...">
             </span>
-            <span style="width: 25%; text-align: center;">
-                <button type="submit" class="btn btn-primary border-0" style="background-color: #73B666;">Pay</button>
+                <span style="width: 25%; text-align: center;">
+                <button type="submit" class="btn btn-primary border-0" style="background-color: #73B666; width: 200px">Pay</button>
             </span>
-        </div>
-    </form>
+            </div>
+        </form>
 
-    <span><p></p></span>
+        <span><p></p></span>
 
-    My transactions
-    <table class="table table-borderless border border-1 border-dark table-striped" id="transactionsTable">
-        <thead class="table" style="background-color: #73B666;">
-        <tr>
-            <th>Connections</th>
-            <th>Description</th>
-            <th>Amount</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="payment, iStat : ${paymentPage.content}"
-        th:style="${iStat.odd}? 'font-weight: normal;'"
-        th:alt-title="${iStat.even}? 'even' : 'odd'">
-            <td th:text="${payment.getUser().getEmail()}" />
-            <td th:text="${payment.getDescription()}"/>
-            <td th:text="${payment.getAmount()}"/>
-        </tr>
-        </tbody>
-    </table>
+        My transactions
+        <table class="table table-borderless border border-1 border-dark table-striped text-center"
+               id="transactionsTable">
+            <!--        <thead class="table" style="background-color: #73B666;">-->
+            <thead style="background-color: #73B666;">
+            <tr class="align-middle" style="height: 70px">
+                <th style="background-color: #73B666; color: white; font-weight: normal;">Connections</th>
+                <th style="background-color: #73B666; color: white; font-weight: normal;">Description</th>
+                <th style="background-color: #73B666; color: white; font-weight: normal;">Amount</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="align-middle" style="height: 70px" th:each="payment, iStat : ${paymentPage.content}"
+                th:style="${iStat.odd}? 'font-weight: normal;'"
+                th:styleappend="'height: 80px;'"
+                th:alt-title="${iStat.even}? 'even' : 'odd'">
+                <td th:text="${payment.getUser().getEmail()}"/>
+                <td th:text="${payment.getDescription()}"/>
+                <td th:text="${payment.getAmount()} + '€'"/>
+            </tr>
+            </tbody>
+        </table>
 
-    <nav class="d-flex justify-content-center" aria-label="Page navigation example">
-        <ul th:if="${paymentPage.totalPages > 0}" class="pagination" >
-            <li class="page-item" th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">
-<!--                <a class="page-link" th:if="${currentPage < 1}"-->
-                <a class="page-link"
-                   th:href="@{/transactions(size=${paymentPage.size}, page=${currentPage - 1})}" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                    <span class="sr-only"></span>
-                </a>
-            </li>
-            <li th:each="pageNumber : ${pageNumbers}" class="page-item" th:classappend="${pageNumber==paymentPage.number + 1} ? active"><a class="page-link" th:href="@{/transactions(size=${paymentPage.size}, page=${pageNumber})}"
-                                     th:text="${pageNumber}"></a>
-            </li>
-            <li class="page-item" th:class="${currentPage == paymentPage.totalPages} ? 'page-item disabled' : page-item">
-                <a class="page-link" th:href="@{/transactions(size=${paymentPage.size}, page=${currentPage + 1})}" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                    <span class="sr-only"></span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+        <nav class="d-flex justify-content-center" aria-label="Page navigation example">
+            <ul th:if="${paymentPage.totalPages > 0}" class="pagination">
+                <li class="page-item" th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">
+                    <!--                <a class="page-link" th:if="${currentPage < 1}"-->
+                    <a class="page-link"
+                       th:href="@{/transactions(size=${paymentPage.size}, page=${currentPage - 1})}"
+                       aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only"></span>
+                    </a>
+                </li>
+                <li th:each="pageNumber : ${pageNumbers}" class="page-item"
+                    th:classappend="${pageNumber==paymentPage.number + 1} ? active"><a class="page-link"
+                                                                                       th:href="@{/transactions(size=${paymentPage.size}, page=${pageNumber})}"
+                                                                                       th:text="${pageNumber}"></a>
+                </li>
+                <li class="page-item"
+                    th:class="${currentPage == paymentPage.totalPages} ? 'page-item disabled' : page-item">
+                    <a class="page-link" th:href="@{/transactions(size=${paymentPage.size}, page=${currentPage + 1})}"
+                       aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only"></span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </div>
 
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
-    <form th:action="@{/connection/addNew}" method="post">
+    <form th:action="@{/connections/addNew}" method="post">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
