@@ -1,7 +1,9 @@
 package com.paymybuddy.transferapp.config;
 
+import com.paymybuddy.transferapp.exceptions.NotFoundException;
 import com.paymybuddy.transferapp.model.User;
 import com.paymybuddy.transferapp.repository.UserRepository;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,6 +32,10 @@ public class CustomUserDetailService implements UserDetailsService {
                 return user.getRole();
             }
         };*/
+
+        if (user == null) {
+            throw new NotFoundException("Invalid credentials");
+        }
 
         GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(user.getRole());
 

@@ -1,5 +1,6 @@
 package com.paymybuddy.transferapp.controller;
 
+import com.paymybuddy.transferapp.exceptions.NotFoundException;
 import com.paymybuddy.transferapp.model.Payment;
 import com.paymybuddy.transferapp.model.User;
 import com.paymybuddy.transferapp.service.*;
