@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,6 +41,76 @@ class UserServiceTest {
         when(balanceRepository.save(balance)).thenReturn(balance);
         when(userRepository.findById(anyInt())).thenReturn(Optional.of(user));
 
+    }
+
+    @Test
+    public void getNoUsers() {
+        reset(userRepository);
+        reset(balanceRepository);
+
+        when(userRepository.findAll()).thenReturn(null);
+
+        RuntimeException runtimeException = assertThrows(RuntimeException.class,
+                () -> userService.getUsers());
+
+        assertEquals("No users found", runtimeException.getMessage());
+    }
+
+    @Test
+    public void getUsers() {
+
+        when(userRepository.findAll()).thenReturn(new ArrayList<>());
+
+        assertDoesNotThrow(() -> userService.getUsers());
+
+        reset(userRepository);
+        reset(balanceRepository);
+    }
+
+    @Test
+    public void getNonExistingUserById() {
+        reset(userRepository);
+        reset(balanceRepository);
+
+        when(userRepository.findById(anyInt())).thenReturn(Optional.ofNullable(null));
+
+        NotFoundException nfe = assertThrows(NotFoundException.class,
+                () -> userService.getUserById(1));
+
+        assertEquals("User not found", nfe.getMessage());
+    }
+
+    @Test
+    public void getExistingUserById() {
+        reset(userRepository);
+        reset(balanceRepository);
+
+        when(userRepository.findById(anyInt())).thenReturn(Optional.of(new User()));
+
+        assertDoesNotThrow(() -> userService.getUserById(1));
+    }
+
+    @Test
+    public void getUserByNonExistingEmail() {
+        reset(userRepository);
+        reset(balanceRepository);
+
+        when(userRepository.getUserByEmail(anyString())).thenReturn(Optional.ofNullable(null));
+
+        NotFoundException nfe = assertThrows(NotFoundException.class,
+                () -> userService.getUserByEmail("whatever"));
+
+        assertEquals("User not found", nfe.getMessage());
+    }
+
+    @Test
+    public void getUserByExistingEmail() {
+        reset(userRepository);
+        reset(balanceRepository);
+
+        when(userRepository.getUserByEmail(anyString())).thenReturn(Optional.ofNullable(new User()));
+
+        assertDoesNotThrow(() -> userService.getUserByEmail("whatever"));
     }
 
     @Test
@@ -107,5 +178,16 @@ class UserServiceTest {
                 () -> userService.updateUser(1, toSave));
 
         assertEquals("User not found", nfe.getMessage());
+    }
+
+    @Test
+    public void updateWithNullUser() {
+        reset(balanceRepository);
+        reset(userRepository);
+
+        NullPointerException npe = assertThrows(NullPointerException.class,
+                () -> userService.updateUser(1, null));
+
+        assertEquals("Invalid parameter", npe.getMessage());
     }
 }

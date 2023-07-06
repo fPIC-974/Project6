@@ -38,7 +38,14 @@ public class UserService implements IUserService {
     @Override
     public List<User> getUsers() {
         logger.debug("Method called : getUsers()");
-        return userRepository.findAll();
+
+        List<User> userList = userRepository.findAll();
+
+        if (userList == null) {
+            throw new RuntimeException("No users found");
+        }
+
+        return userList;
     }
 
     /**
@@ -66,7 +73,7 @@ public class UserService implements IUserService {
         logger.debug("Method called : getUserByEmail(" + email + ")");
 
         logger.debug("Method called : userRepository.getUserByEmail(" + email + ")");
-                Optional<User> user = userRepository.getUserByEmail(email);
+        Optional<User> user = userRepository.getUserByEmail(email);
 
         if (user.isEmpty()) {
             logger.error("User with email " + email + " not found");
@@ -114,7 +121,7 @@ public class UserService implements IUserService {
     public User updateUser(int id, User user) {
 
         if (user == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("Invalid parameter");
         }
 
         User toUpdate = userRepository.findById(id).orElse(null);
@@ -133,6 +140,5 @@ public class UserService implements IUserService {
 
     @Override
     public void deleteUser(int id) {
-
     }
 }
