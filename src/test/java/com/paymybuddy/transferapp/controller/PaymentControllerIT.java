@@ -1,5 +1,6 @@
 package com.paymybuddy.transferapp.controller;
 
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -36,6 +37,7 @@ class PaymentControllerIT {
 
     @Test
     @WithMockUser("toto@mail.net")
+    @Transactional
     public void testAddPayment() throws Exception {
         mockMvc.perform(post("/payments/addNew")
                         .param("user", "1")
