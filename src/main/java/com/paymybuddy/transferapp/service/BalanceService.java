@@ -1,5 +1,6 @@
 package com.paymybuddy.transferapp.service;
 
+import com.paymybuddy.transferapp.exceptions.NotFoundException;
 import com.paymybuddy.transferapp.model.Balance;
 import com.paymybuddy.transferapp.repository.BalanceRepository;
 import org.apache.logging.log4j.LogManager;
@@ -20,17 +21,30 @@ public class BalanceService implements IBalanceService {
 
     @Override
     public List<Balance> getBalances() {
-        return balanceRepository.findAll();
+        logger.debug("Method called : getBalances()");
+
+        List<Balance> balanceList = balanceRepository.findAll();
+
+        if (balanceList.isEmpty()) {
+            logger.error("No balances found");
+            throw new RuntimeException("No balances found");
+        }
+
+        return balanceList;
     }
 
     @Override
     public Balance getBalance(int id) {
-        return balanceRepository.findById(id).orElse(null);
-    }
+        logger.debug("Method called : getBalances(" + id + ")");
 
-    @Override
-    public Balance saveBalance(Balance balance) {
-        return balanceRepository.save(balance);
+        Balance balance = balanceRepository.findById(id).orElse(null);
+
+        if (balance == null) {
+            logger.error("Could not find Balance with id : " + id);
+            throw new NotFoundException("Balance not found");
+        }
+
+        return balance;
     }
 
     @Override
@@ -50,8 +64,4 @@ public class BalanceService implements IBalanceService {
         return balanceRepository.save(toUpdate);
     }
 
-    @Override
-    public void deleteBalance(int id) {
-        balanceRepository.deleteById(id);
-    }
 }

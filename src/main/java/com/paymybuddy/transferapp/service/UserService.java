@@ -137,8 +137,4 @@ public class UserService implements IUserService {
 
         return userRepository.save(toUpdate);
     }
-
-    @Override
-    public void deleteUser(int id) {
-    }
 }

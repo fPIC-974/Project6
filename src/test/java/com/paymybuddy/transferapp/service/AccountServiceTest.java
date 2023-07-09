@@ -18,36 +18,4 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AccountServiceTest {
-
-    @Mock
-    private AccountRepository accountRepository;
-
-    @InjectMocks
-    private UserService userService;
-
-    @BeforeEach
-    public void setUp() {
-        User user = new User("John", "Doe", "jdoe@mail.net", "pass");
-        Account account = new Account("jdoeAccount", 111111, user);
-    }
-
-    @Test
-    public void saveExistingAccount() {
-
-    }
-
-    @Test
-    public void saveNonExistingAccount() {
-
-    }
-
-    @Test
-    public void updateNonExistingAccount() {
-
-    }
-
-    @Test
-    public void updateExistingAccount() {
-
-    }
 }

@@ -30,9 +30,9 @@ class PaymentControllerIT {
                         .param("amount", "100000")
                         .param("description", "Test"))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(view().name("transactions"))
-                .andExpect(content().string(containsString("Insufficient funds")));
+                .andExpect(view().name("redirect:/transactions"))
+                .andExpect(redirectedUrl("/transactions?currentPage=1&errorMessage=Insufficient+funds&pageNumbers=1&pageNumbers=2&pageNumbers=3&pageNumbers=4&user=1"))
+                .andExpect(model().attribute("errorMessage", "Insufficient funds"));
     }
 
     @Test
@@ -45,8 +45,8 @@ class PaymentControllerIT {
                         .param("amount", "23")
                         .param("description", "Test"))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(view().name("transactions"))
-                .andExpect(content().string(containsString("Payment done")));
+                .andExpect(view().name("redirect:/transactions"))
+                .andExpect(redirectedUrl("/transactions?currentPage=1&statusMessage=Payment+done&pageNumbers=1&pageNumbers=2&pageNumbers=3&pageNumbers=4&user=1"))
+                .andExpect(model().attribute("statusMessage", "Payment done"));
     }
 }

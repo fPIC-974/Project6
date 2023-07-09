@@ -26,24 +26,18 @@ public class TransferappApplication implements CommandLineRunner {
     private static final Logger logger = LogManager.getLogger(TransferappApplication.class);
 
     private final UserService userService;
-    private final AccountService accountService;
     private final BalanceService balanceService;
     private final ConnectionService connectionService;
     private final PaymentService paymentService;
-    private final TransferService transferService;
 
     public TransferappApplication(UserService userService,
-                                AccountService accountService,
                                 BalanceService balanceService,
                                 ConnectionService connectionService,
-                                PaymentService paymentService,
-                                TransferService transferService) {
+                                PaymentService paymentService) {
         this.userService = userService;
-        this.accountService = accountService;
         this.balanceService = balanceService;
         this.connectionService = connectionService;
         this.paymentService = paymentService;
-        this.transferService = transferService;
     }
 
     public static void main(String[] args) {
