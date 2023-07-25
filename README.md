@@ -14,5 +14,7 @@
     - Source root: src/main/java
     - View: src/main/resources
     - Static: src/main/resource/static
-5. Run sql script to create database and tables : doc/data.sql
-6. Run sql script to populate test database : doc/values.sql
+4. Run sql script to create database and tables : doc/data.sql
+5. Run sql script to populate test database : doc/values.sql
+6. Doc
+   - ![alt text](https://github.com/fPIC-974/Project6/blob/main/blob/UML.png?raw=true)
