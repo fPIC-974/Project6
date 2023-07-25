@@ -16,5 +16,8 @@
     - Static: src/main/resource/static
 4. Run sql script to create database and tables : doc/data.sql
 5. Run sql script to populate test database : doc/values.sql
-6. Doc
-   - ![alt text](https://github.com/fPIC-974/Project6/blob/main/blob/UML.png?raw=true)
+   - default password for user is 'password'
+6. UML
+   - ![alt text](https://github.com/fPIC-974/Project6/blob/main/doc/UML.png?raw=true)
+7. Modèle physique
+   - ![alt text](https://github.com/fPIC-974/Project6/blob/main/doc/MPD.png?raw=true)
