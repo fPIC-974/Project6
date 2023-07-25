@@ -22,12 +22,12 @@ class TransactionControllerIT {
     public MockMvc mockMvc;
 
     @Test
-    @WithMockUser("toto@mail.net")
+    @WithMockUser("user0@mail.net")
     public void testGetTransactions() throws Exception {
         mockMvc.perform(get("/transactions"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name("transactions"))
-                .andExpect(content().string(containsString("Premier paiement")));
+                .andExpect(content().string(containsString("transaction 1")));
     }
 }

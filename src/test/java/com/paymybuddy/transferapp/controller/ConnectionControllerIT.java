@@ -37,16 +37,16 @@ class ConnectionControllerIT {
     }
 
     @Test
-    @WithMockUser("toto@mail.net")
+    @WithMockUser("user0@mail.net")
     @Transactional
     public void testAddExistingConnection() throws Exception {
         mockMvc.perform(post("/connections/addNew")
                         .param("id", "1")
-                        .param("email", "tyty@mail.net"))
+                        .param("email", "user1@mail.net"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name("transactions"))
                 .andExpect(content().string(containsString("Connection added")))
-                .andExpect(content().string(containsString("tyty@mail.net")));
+                .andExpect(content().string(containsString("user1@mail.net")));
     }
 }
