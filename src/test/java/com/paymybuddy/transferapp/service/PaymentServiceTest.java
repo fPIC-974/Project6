@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -101,6 +102,7 @@ class PaymentServiceTest {
         assertEquals(0, payments.size());
         assertEquals(0, toCheck.getTotalElements());
         assertEquals(0, toCheck.getTotalPages());
+        assertEquals(Collections.emptyList(), toCheck.getContent());
         assertTrue(toCheck.isEmpty());
     }
 
@@ -125,7 +127,7 @@ class PaymentServiceTest {
     @Test
     public void getPaymentsPaginatedListOfPaymentsMultiPage() {
         List<Payment> payments = new ArrayList<>();
-        payments.add(new Payment());
+        payments.add(new Payment(100.00, "One", new Balance(), new User()));
         payments.add(new Payment());
         payments.add(new Payment());
         payments.add(new Payment());
@@ -139,6 +141,10 @@ class PaymentServiceTest {
         assertEquals(4, payments.size());
         assertEquals(4, toCheck.getTotalElements());
         assertEquals(2, toCheck.getTotalPages());
+        assertEquals(3, toCheck.getContent().size());
+        assertEquals(100.00, toCheck.getContent().get(0).getAmount());
+        assertEquals("One", toCheck.getContent().get(0).getDescription());
+        assertEquals(payments.subList(0, 3), toCheck.getContent());
     }
 
     @Test

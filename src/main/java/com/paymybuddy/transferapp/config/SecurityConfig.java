@@ -26,16 +26,6 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/").permitAll()
-                /*.requestMatchers("/user/list").hasAnyAuthority("USER", "ADMIN")
-                .requestMatchers(HttpMethod.POST, "/user/**").hasAuthority("ADMIN")
-                .requestMatchers("/user/add/**").hasAuthority("ADMIN")
-                .requestMatchers("/user/update/**").hasAuthority("ADMIN")
-                .requestMatchers("/user/validate").hasAuthority("ADMIN")
-                .requestMatchers("/user/delete/**").hasAuthority("ADMIN")*/
-                /*.requestMatchers("/user/update/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/user/**").hasRole("ADMIN")
-                .requestMatchers("/user/validate").hasRole("ADMIN")
-                .requestMatchers("/user/delete/**").hasRole("ADMIN")*/
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -60,12 +50,5 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    /*@Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(passwordEncoder());
-        provider.setUserDetailsService(customUserDetailService);
-        return provider;
-    }*/
 }
 

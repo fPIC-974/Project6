@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import static org.hamcrest.Matchers.any;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.reset;
@@ -98,13 +99,18 @@ class ConnectionServiceTest {
     }
 
     @Test
-    @Disabled
     public void saveNotFoundConnection() {
+        User owner = new User("toto", "TOTO", "toto@mail.net", "pass");
+        User related = new User("titi", "TITI", "titi@mail.net", "pass");
 
-        when(userRepository.findById(anyInt())).thenReturn(Optional.ofNullable(null));
+        owner.setId(1);
+        related.setId(2);
+
+//        when(userRepository.findById(1)).thenReturn(Optional.of(owner));
+        when(userRepository.findById(2)).thenReturn(Optional.ofNullable(null));
 
         NotFoundException notFoundException = assertThrows(NotFoundException.class,
-                () -> connectionService.saveConnection(new User(), new User()));
+                () -> connectionService.saveConnection(owner, related));
 
         assertEquals("User not found", notFoundException.getMessage());
 

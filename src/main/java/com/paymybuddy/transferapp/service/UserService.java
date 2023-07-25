@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Data
 public class UserService implements IUserService {
 
     private static final Logger logger = LogManager.getLogger(UserService.class);

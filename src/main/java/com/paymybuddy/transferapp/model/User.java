@@ -12,6 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 @Data
+@EqualsAndHashCode
 @ToString
 public class User {
     @Id
